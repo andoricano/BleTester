@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+**/build/
+**/captures/
+.externalNativeBuild/
+.cxx/
+
+# IDE
+*.iml
+/.idea/
+
+# IDE 내부 데이터 중 꼭 제외할 것만 남기고 전체를 무시
+# (특정 파일만 골라서 쓰는 것보다 .idea/ 전체 무시가 안전)
+# /idea/caches
+# /idea/libraries
+# /idea/modules.xml
+# /idea/workspace.xml
+# /idea/navEditor.xml
+# /idea/assetWizardSettings.xml
+
+# Local config
+/local.properties
+
+# macOS
+.DS_Store
