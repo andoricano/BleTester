@@ -8,8 +8,10 @@ import android.bluetooth.le.ScanResult
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.content.ContextCompat
+import com.ando.bletester.App
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +28,9 @@ import javax.inject.Singleton
 class BleGattClient @Inject constructor(
     @ApplicationContext private val context : Context
 ) {
+    companion object{
+        private const val TAG = App.TAG+"BleGattClient"
+    }
     private val scope = CoroutineScope(Dispatchers.IO)
     private val bluetoothAdapter: BluetoothAdapter? by lazy {
         val bluetoothManager = context.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
@@ -50,11 +55,16 @@ class BleGattClient @Inject constructor(
 
         override fun onScanFailed(errorCode: Int) {
             super.onScanFailed(errorCode)
-            _scanState.value = BleScanState.ScanFailed
+            _scanState.update { BleScanState.ScanFailed }
         }
     }
 
     private var scanJob : Job? = null
+
+    init{
+        Log.i(TAG, "$TAG is Start!")
+    }
+
     @RequiresPermission(anyOf = [
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.BLUETOOTH_SCAN
@@ -72,7 +82,8 @@ class BleGattClient @Inject constructor(
         scanJob = scope.launch {
             delay(scanDurationMs)
             stopScan()
-            _scanState.value = BleScanState.Scanned
+            _scanState.update {  BleScanState.Scanned }
+            Log.i(TAG,"scanned success ${scanResults[0]}")
         }
     }
 
