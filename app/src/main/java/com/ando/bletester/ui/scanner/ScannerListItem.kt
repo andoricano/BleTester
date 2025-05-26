@@ -1,5 +1,6 @@
 package com.ando.bletester.ui.scanner
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,10 +12,13 @@ import androidx.compose.ui.unit.dp
 import com.ando.bletester.ui.scanner.data.ScannerItem
 
 @Composable
-fun ScannerListItem(scannerItem: ScannerItem) {
-    Column(modifier = Modifier
+fun ScannerListItem(scannerItem: ScannerItem, onClick : (ScannerItem) -> Unit) {
+    Column(
+        modifier = Modifier
         .fillMaxWidth()
-        .padding(16.dp)) {
+        .clickable { onClick(scannerItem) }
+        .padding(16.dp)
+    ) {
 
         Text(text = scannerItem.deviceName ?: "Unknown Device", style = MaterialTheme.typography.titleMedium)
         Text(text = "Address: ${scannerItem.address}", style = MaterialTheme.typography.bodyMedium)

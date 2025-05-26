@@ -16,11 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ando.bletester.ui.scanner.data.ScannerItem
 
 @Composable
 fun ScannerList(
     modifier: Modifier = Modifier,
-    viewModel : ScannerViewModel = hiltViewModel()
+    viewModel : ScannerViewModel = hiltViewModel(),
+    onClick : (ScannerItem) ->Unit
 ){
     val scanResults by viewModel.scanResults
 
@@ -38,10 +40,9 @@ fun ScannerList(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
         LazyColumn {
             items(scanResults) { result ->
-                ScannerListItem(result)
+                ScannerListItem(result, onClick = onClick)
             }
         }
     }

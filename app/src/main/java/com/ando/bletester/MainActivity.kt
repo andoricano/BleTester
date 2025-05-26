@@ -18,7 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.ando.bletester.ui.scanner.ScannerScreen
+import androidx.navigation.compose.rememberNavController
 import com.ando.bletester.ui.theme.BleTesterTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +32,13 @@ class MainActivity : ComponentActivity() {
             BleTesterTheme {
                 BlePermissionRequester()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ScannerScreen(modifier = Modifier.padding(innerPadding))
+
+                    val navController = rememberNavController()
+
+                    AppNavHost(
+                        navController = navController,
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }
