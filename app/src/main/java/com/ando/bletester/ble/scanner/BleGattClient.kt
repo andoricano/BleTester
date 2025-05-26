@@ -83,7 +83,7 @@ class BleGattClient @Inject constructor(
             delay(scanDurationMs)
             stopScan()
             _scanState.update {  BleScanState.Scanned }
-            Log.i(TAG,"scanned success ${scanResults[0]}")
+            Log.i(TAG,"scanned success $scanResults")
         }
     }
 
