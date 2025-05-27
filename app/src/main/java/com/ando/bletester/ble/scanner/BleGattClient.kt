@@ -1,8 +1,13 @@
 package com.ando.bletester.ble.scanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothManager
+import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
 import android.content.Context
@@ -24,6 +29,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@SuppressLint("MissingPermission")
 @Singleton
 class BleGattClient @Inject constructor(
     @ApplicationContext private val context : Context
@@ -41,23 +47,12 @@ class BleGattClient @Inject constructor(
     val scanState : StateFlow<BleScanState>
         get() = _scanState
 
+    private val _gattState = MutableStateFlow(GattConnectionState.DISCONNECTED)
+    val gattState : StateFlow<GattConnectionState>
+        get() = _gattState
+
     private val scanResults = mutableListOf<ScanResult>()
-
-    private val scanCallback = object : ScanCallback() {
-        override fun onScanResult(callbackType: Int, result: ScanResult) {
-            val indexQuery = scanResults.indexOfFirst { it.device.address == result.device.address }
-            if (indexQuery != -1) {
-                scanResults[indexQuery] = result
-            } else {
-                scanResults.add(result)
-            }
-        }
-
-        override fun onScanFailed(errorCode: Int) {
-            super.onScanFailed(errorCode)
-            _scanState.update { BleScanState.ScanFailed }
-        }
-    }
+    private val characteristicList = mutableListOf<BluetoothGattCharacteristic>()
 
     private var scanJob : Job? = null
 
@@ -87,6 +82,15 @@ class BleGattClient @Inject constructor(
         }
     }
 
+    fun connectBleByIndex(idx: Int) {
+        if (idx !in scanResults.indices) {
+            Log.e(TAG, "not in scanResults")
+            return
+        }
+
+        val device = scanResults[idx].device
+        device.connectGatt(context, false, gattCallback)
+    }
 
     private fun hasPermissions(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -111,4 +115,52 @@ class BleGattClient @Inject constructor(
     }
 
     fun getScanResults(): List<ScanResult> = scanResults.toList()
+
+    private val gattCallback = object : BluetoothGattCallback() {
+        override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {
+            when (newState) {
+                BluetoothProfile.STATE_CONNECTED -> {
+                    _gattState.update { GattConnectionState.CONNECTING }
+                    gatt?.discoverServices()
+                }
+                BluetoothProfile.STATE_DISCONNECTED -> {
+                    _gattState.update { GattConnectionState.DISCONNECTED }
+                }
+            }
+        }
+
+        override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
+            super.onServicesDiscovered(gatt, status)
+            if (status == BluetoothGatt.GATT_SUCCESS && gatt != null) {
+                for (service in gatt.services) {
+                    for (characteristic in service.characteristics) {
+                        characteristicList.add(characteristic)
+                    }
+                }
+                _gattState.update { GattConnectionState.CONNECTED }
+
+            } else {
+                _gattState.update { GattConnectionState.FAILED }
+                Log.e(TAG, "서비스 검색 실패: $status")
+            }
+        }
+    }
+
+
+
+    private val scanCallback = object : ScanCallback() {
+        override fun onScanResult(callbackType: Int, result: ScanResult) {
+            val indexQuery = scanResults.indexOfFirst { it.device.address == result.device.address }
+            if (indexQuery != -1) {
+                scanResults[indexQuery] = result
+            } else {
+                scanResults.add(result)
+            }
+        }
+
+        override fun onScanFailed(errorCode: Int) {
+            super.onScanFailed(errorCode)
+            _scanState.update { BleScanState.ScanFailed }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ScannerItem(
+    val idx : Int,
     val deviceName: String?,
     val address: String,
     val rssi: Int

@@ -5,6 +5,7 @@ import android.bluetooth.le.ScanResult
 import android.util.Log
 import com.ando.bletester.ble.scanner.BleGattClient
 import com.ando.bletester.ble.scanner.BleScanState
+import com.ando.bletester.ble.scanner.GattConnectionState
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,6 +21,9 @@ class BleScannerRepositoryImpl @Inject constructor(
     override val scanState: StateFlow<BleScanState>
         get() = bleGattClient.scanState
 
+    override val gattState: StateFlow<GattConnectionState>
+        get() = bleGattClient.gattState
+
     override fun startScan() {
         bleGattClient.startScanWithTimeout()
     }
@@ -29,5 +33,8 @@ class BleScannerRepositoryImpl @Inject constructor(
     }
 
     override fun getScanResult(): List<ScanResult> = bleGattClient.getScanResults()
+    override fun connectBleByIndex(idx : Int) {
+        bleGattClient.connectBleByIndex(idx)
+    }
 
 }
