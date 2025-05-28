@@ -3,6 +3,7 @@ package com.ando.bletester.data.repository.scan
 import android.bluetooth.le.ScanResult
 import com.ando.bletester.ble.scanner.BleScanState
 import com.ando.bletester.ble.scanner.GattConnectionState
+import com.ando.bletester.ui.scanner.data.ScannerItem
 import kotlinx.coroutines.flow.StateFlow
 
 interface BleScannerRepository {
@@ -12,5 +13,10 @@ interface BleScannerRepository {
     fun stopScan()
     fun getScanResult() : List<ScanResult>
 
-    fun connectBleByIndex(idx : Int)
+    fun connectBleByIndex(scannerItem: ScannerItem)
+
+
+    fun testStart()
+    fun testConnection(idx : Int)
+    fun testGetList() : List<ScannerItem>
 }

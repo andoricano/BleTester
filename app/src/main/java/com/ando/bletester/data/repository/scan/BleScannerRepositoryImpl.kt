@@ -6,6 +6,7 @@ import android.util.Log
 import com.ando.bletester.ble.scanner.BleGattClient
 import com.ando.bletester.ble.scanner.BleScanState
 import com.ando.bletester.ble.scanner.GattConnectionState
+import com.ando.bletester.ui.scanner.data.ScannerItem
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,8 +34,19 @@ class BleScannerRepositoryImpl @Inject constructor(
     }
 
     override fun getScanResult(): List<ScanResult> = bleGattClient.getScanResults()
-    override fun connectBleByIndex(idx : Int) {
-        bleGattClient.connectBleByIndex(idx)
+    override fun connectBleByIndex(scannerItem: ScannerItem) {
+        bleGattClient.connectBleByIndex(scannerItem)
     }
 
+    override fun testStart() {
+        bleGattClient.testStart()
+    }
+
+    override fun testConnection(idx: Int) {
+        bleGattClient.testConnection(idx)
+    }
+
+    override fun testGetList(): List<ScannerItem> {
+        return bleGattClient.testGetList()
+    }
 }

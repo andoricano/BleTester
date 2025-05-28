@@ -6,7 +6,16 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ScannerItem(
     val idx : Int,
-    val deviceName: String?,
+    val deviceName: String,
     val address: String,
     val rssi: Int
-) : Parcelable
+) : Parcelable {
+    companion object {
+        fun empty() = ScannerItem(
+            idx = -1,
+            deviceName = "",
+            address = "",
+            rssi = 0
+        )
+    }
+}
