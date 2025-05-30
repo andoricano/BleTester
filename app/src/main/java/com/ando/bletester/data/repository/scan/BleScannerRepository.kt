@@ -1,5 +1,6 @@
 package com.ando.bletester.data.repository.scan
 
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanResult
 import com.ando.bletester.ble.scanner.BleScanState
 import com.ando.bletester.ble.scanner.GattConnectionState
@@ -17,6 +18,7 @@ interface BleScannerRepository {
 
 
     fun testStart()
-    fun testConnection(idx : Int)
     fun testGetList() : List<ScannerItem>
+
+    fun testConnection(deviceName : String, connection : Boolean)
 }

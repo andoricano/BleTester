@@ -22,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import com.ando.bletester.ui.theme.BleTesterTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

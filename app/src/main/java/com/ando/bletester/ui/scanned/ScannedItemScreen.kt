@@ -44,7 +44,7 @@ fun ScannedItemScreen(scannerItem: ScannerItem?) {
                 .fillMaxWidth()
                 .height(56.dp)
         ) {
-            viewModel.testConnection(scannerItem?.idx?:-1)
+            //TODO
         }
     }
 }
