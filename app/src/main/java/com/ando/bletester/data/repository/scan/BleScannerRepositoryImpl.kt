@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanResult
 import android.util.Log
-import com.ando.bletester.ble.advertiser.AdvertiserManager
-import com.ando.bletester.ble.scanner.BleGattClient
-import com.ando.bletester.ble.scanner.BleScanState
-import com.ando.bletester.ble.scanner.GattConnectionState
-import com.ando.bletester.ble.scanner.ScannerManager
+import com.ando.bletester.bluetooth.ble.advertiser.AdvertiserManager
+import com.ando.bletester.bluetooth.ble.scanner.BleGattClient
+import com.ando.bletester.bluetooth.ble.scanner.BleScanState
+import com.ando.bletester.bluetooth.ble.scanner.GattConnectionState
+import com.ando.bletester.bluetooth.ble.scanner.ScannerManager
 import com.ando.bletester.ui.scanner.data.ScannerItem
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -41,6 +41,10 @@ class BleScannerRepositoryImpl @Inject constructor(
     override fun getScanResult(): List<ScanResult> = bleGattClient.getScanResults()
     override fun connectBleByIndex(scannerItem: ScannerItem) {
         bleGattClient.connectBleByIndex(scannerItem)
+    }
+
+    override fun getFindScannedDeviceInfo(scannerItem: ScannerItem): BluetoothDevice? {
+        return scannerManager.getScannedDeviceInfo(scannerItem)
     }
 
     override fun testStart() {

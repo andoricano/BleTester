@@ -1,4 +1,4 @@
-package com.ando.bletester.ble.advertiser
+package com.ando.bletester.bluetooth.ble.advertiser
 
 import android.bluetooth.BluetoothManager
 

@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import com.ando.bletester.MainViewModel
 import com.ando.bletester.NavArgs
 import com.ando.bletester.NavRoutes
 import com.ando.bletester.ui.scanner.data.ScannerItem
@@ -22,11 +24,11 @@ fun ScannerScreen(
     modifier: Modifier = Modifier,
 ) {
     val viewModel: ScannerViewModel = hiltViewModel()
+    val mainViewModel : MainViewModel = hiltViewModel()
     val onClick : (ScannerItem) -> Unit ={item ->
-        navController.currentBackStackEntry?.savedStateHandle?.set(NavArgs.SCANNER_ITEM, item)
-        navController.navigate(NavRoutes.SCANNED)
-
+        mainViewModel.updateSelectedDevice(item)
         Log.d("ScannerScreen", "Saved scannerItem: $item")
+        navController.navigate(NavRoutes.SCANNED)
     }
     Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         ScannerList(onClick = onClick)

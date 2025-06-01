@@ -17,14 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ando.bletester.App.Companion.TAG
+import com.ando.bletester.MainViewModel
 import com.ando.bletester.ui.components.buttons.BottomButton
 import com.ando.bletester.ui.scanner.data.ScannerItem
 import java.nio.file.WatchEvent
 
 @Composable
-fun ScannedItemScreen(scannerItem: ScannerItem?) {
-    Log.i("ScannedItemScreen", "$scannerItem")
+fun ScannedItemScreen() {
     val viewModel: ScannedItemViewModel = hiltViewModel()
+    val mvm : MainViewModel = hiltViewModel()
+    val device = mvm.selectedDevice
+    if(device == null) return
+
     Column(
         modifier = Modifier
             .padding(26.dp)
@@ -32,7 +36,7 @@ fun ScannedItemScreen(scannerItem: ScannerItem?) {
             .navigationBarsPadding()
     ) {
         ScannedItemInfo(
-            scannerItem ?: ScannerItem.empty(),
+            device,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)

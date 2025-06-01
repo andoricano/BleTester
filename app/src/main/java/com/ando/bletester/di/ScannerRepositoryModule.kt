@@ -1,12 +1,10 @@
 package com.ando.bletester.di
 
-import android.app.Application
 import android.bluetooth.BluetoothManager
-import android.bluetooth.le.BluetoothLeScanner
 import android.content.Context
-import com.ando.bletester.ble.advertiser.AdvertiserManager
-import com.ando.bletester.ble.scanner.BleGattClient
-import com.ando.bletester.ble.scanner.ScannerManager
+import com.ando.bletester.bluetooth.ble.advertiser.AdvertiserManager
+import com.ando.bletester.bluetooth.ble.scanner.BleGattClient
+import com.ando.bletester.bluetooth.ble.scanner.ScannerManager
 import com.ando.bletester.data.repository.scan.BleScannerRepository
 import com.ando.bletester.data.repository.scan.BleScannerRepositoryImpl
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.ando.bletester.ble.scanner
+package com.ando.bletester.bluetooth.ble.scanner
 
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothGatt

@@ -1,24 +1,18 @@
 package com.ando.bletester.ui.scanner
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.bluetooth.le.ScanResult
 import android.util.Log
-import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.ando.bletester.App
-import com.ando.bletester.ble.scanner.BleScanState
+import com.ando.bletester.bluetooth.ble.scanner.BleScanState
 import com.ando.bletester.data.repository.scan.BleScannerRepository
 import com.ando.bletester.ui.scanner.data.ScannerItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.Scanner
 import javax.inject.Inject
 
 @HiltViewModel

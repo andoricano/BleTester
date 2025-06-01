@@ -1,6 +1,7 @@
-package com.ando.bletester.ble.scanner
+package com.ando.bletester.bluetooth.ble.scanner
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.BluetoothLeScanner
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanResult
@@ -76,6 +77,10 @@ class ScannerManager(private val bleScanner: BluetoothLeScanner) {
 
     fun startTestScan(){
         _scanState.update {  BleScanState.Scanned }
+    }
+
+    fun getScannedDeviceInfo(scannerItem: ScannerItem): BluetoothDevice? {
+        return scanResults.firstOrNull { it.device.address == scannerItem.address }?.device
     }
 
     fun testGetList() : List<ScannerItem> = getFake()
