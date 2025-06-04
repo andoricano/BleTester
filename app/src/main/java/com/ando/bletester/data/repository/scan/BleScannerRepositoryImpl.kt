@@ -18,7 +18,6 @@ import javax.inject.Singleton
 @Singleton
 class BleScannerRepositoryImpl @Inject constructor(
     private val scannerManager: ScannerManager,
-    private val advertiserManager : AdvertiserManager,
     private val bleGattClient: BleGattClient
 ) : BleScannerRepository{
     init{
