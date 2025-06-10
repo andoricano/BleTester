@@ -63,4 +63,48 @@ class BleAdvertisingRepositoryImpl@Inject constructor(
     override fun stopAdvertising() {
         advertiserManager.stopAdvertising()
     }
+
+    override fun startLegacyAdvertising() {
+        advertiserManager.startLegacyAdvertising()
+    }
+
+    override fun stopLegacyAdvertising() {
+        advertiserManager.stopLegacyAdvertising()
+    }
+
+    override fun getBtDeviceName(): String {
+        return advertiserManager.getBtDeviceName()
+    }
+
+    override fun setBtDeviceName(name: String) {
+        advertiserManager.setBtDeviceName(name)
+    }
+
+    override fun configureLegacyAdvertisingData(
+        includeName: Boolean,
+        includeTxPower: Boolean,
+        manufacturerId: Int?,
+        manufacturerData: ByteArray?,
+        addServiceUuid: UUID?,
+        addServiceData: ByteArray?
+    ) {
+        advertiserManager.configureLegacyAdvertisingData(
+            includeName,
+            includeTxPower,
+            manufacturerId,
+            manufacturerData,
+            addServiceUuid,
+            addServiceData
+        )
+    }
+
+    override fun configureLegacyAdvertisingSetting(
+        mode: Int,
+        txPower: Int,
+        connectable: Boolean
+    ) {
+        advertiserManager.configureLegacyAdvertisingSetting(
+            mode,txPower,connectable
+        )
+    }
 }

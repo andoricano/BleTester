@@ -11,6 +11,7 @@ import android.bluetooth.le.BluetoothLeAdvertiser
 import android.os.ParcelUuid
 import android.util.Log
 import com.ando.bletester.App
+import com.ando.bletester.bluetooth.ble.advertiser.legacy.Advertiser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ class AdvertiserManager (private val btManager : BluetoothManager){
         private const val TAG = App.TAG+"AdvertiserManager"
     }
 
+    private val legacyAdvertiser = Advertiser(btManager.adapter)
     private val advertiser: BluetoothLeAdvertiser? = btManager.adapter.bluetoothLeAdvertiser
     private var advertisingSet: AdvertisingSet? = null
 
@@ -211,4 +213,49 @@ class AdvertiserManager (private val btManager : BluetoothManager){
 
         }
     }
+
+    fun startLegacyAdvertising(){
+        legacyAdvertiser.startAdvertising()
+    }
+
+    fun stopLegacyAdvertising(){
+        legacyAdvertiser.stopAdvertising()
+    }
+
+    fun setBtDeviceName(name : String){
+        legacyAdvertiser.setBtDeviceName(name)
+    }
+
+    fun getBtDeviceName() : String{
+        return legacyAdvertiser.getBtDeviceName()
+    }
+
+    fun configureLegacyAdvertisingData(
+        includeName: Boolean = true,
+        includeTxPower: Boolean = false,
+        manufacturerId: Int? = null,
+        manufacturerData: ByteArray? = null,
+        addServiceUuid : UUID? = null,
+        addServiceData : ByteArray? = null
+    ){
+        legacyAdvertiser.configureData(
+            includeName,
+            includeTxPower,
+            manufacturerId,
+            manufacturerData,
+            addServiceUuid,
+            addServiceData
+        )
+    }
+
+    fun configureLegacyAdvertisingSetting(
+        mode: Int = AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY,
+        txPower: Int = AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM,
+        connectable: Boolean = false,
+    ){
+        legacyAdvertiser.configureSettings(
+            mode,txPower,connectable
+        )
+    }
+
 }
