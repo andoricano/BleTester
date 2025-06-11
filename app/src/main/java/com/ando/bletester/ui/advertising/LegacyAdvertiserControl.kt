@@ -47,8 +47,8 @@ fun LegacyAdvertiserControl() {
 
     var includeName by remember { mutableStateOf(true) }
     var includeTxPower by remember { mutableStateOf(false) }
-    var manufacturerIdText by remember { mutableStateOf("1107") }
-    var manufacturerDataText by remember { mutableStateOf("DB710000000000000000FFFFFFFFFFFF") }
+    var manufacturerIdText by remember { mutableStateOf("") }
+    var manufacturerDataText by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -66,7 +66,7 @@ fun LegacyAdvertiserControl() {
                     },
                     enabled = !isAdvertising
                 ) {
-                    Text("광고 시작")
+                    Text("Advertising")
                 }
 
                 Button(
@@ -76,7 +76,7 @@ fun LegacyAdvertiserControl() {
                     },
                     enabled = isAdvertising
                 ) {
-                    Text("광고 중지")
+                    Text("Stop")
                 }
             }
         }
@@ -90,7 +90,7 @@ fun LegacyAdvertiserControl() {
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             // === Settings Section ===
-            Text("📡 광고 설정", style = MaterialTheme.typography.titleMedium)
+            Text("Advertising Data", style = MaterialTheme.typography.titleMedium)
 
             SettingDropdown("Advertise Mode", mode, listOf(
                 AdvertiseSettings.ADVERTISE_MODE_LOW_POWER to "Low Power",
@@ -114,13 +114,13 @@ fun LegacyAdvertiserControl() {
             Button(onClick = {
                 vm.configureLegacyAdvertisingSetting(mode, txPower, connectable)
             }) {
-                Text("설정 저장")
+                Text("Save")
             }
 
             Divider()
 
             // === Data Section ===
-            Text("🧾 광고 데이터", style = MaterialTheme.typography.titleMedium)
+            Text("Advertising Data", style = MaterialTheme.typography.titleMedium)
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Include Name")
@@ -137,7 +137,7 @@ fun LegacyAdvertiserControl() {
             OutlinedTextField(
                 value = manufacturerIdText,
                 onValueChange = { manufacturerIdText = it },
-                label = { Text("Manufacturer ID (decimal or hex)") },
+                label = { Text("Manufacturer ID (hex)") },
                 singleLine = true
             )
 
@@ -168,7 +168,7 @@ fun LegacyAdvertiserControl() {
                     manufacturerData = data
                 )
             }) {
-                Text("데이터 저장")
+                Text("Save")
             }
         }
     }

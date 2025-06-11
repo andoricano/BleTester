@@ -31,7 +31,7 @@ fun BtDeviceName() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(text = "Bluetooth Device Name 설정", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "Bluetooth Device Name", style = MaterialTheme.typography.bodyMedium)
 
         TextField(
             value = btName,
@@ -47,13 +47,12 @@ fun BtDeviceName() {
                 savedName = btName
             },
             enabled = btName.isNotBlank(),
-            modifier = Modifier.fillMaxWidth()
         ) {
-            Text("저장")
+            Text("Save")
         }
 
         savedName.let {
-            Text(text = "설정된 이름: $it", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Bluetooth Name: $it", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
