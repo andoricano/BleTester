@@ -1,5 +1,6 @@
 package com.ando.bletester.data.repository.advertising
 
+import com.ando.bletester.App.Companion.prefs
 import com.ando.bletester.bluetooth.ble.advertiser.AdvertiserManager
 import com.ando.bletester.bluetooth.ble.advertiser.BleAdvertisingState
 import com.ando.bletester.bluetooth.ble.advertiser.BleGattServer
@@ -11,6 +12,18 @@ class BleAdvertisingRepositoryImpl@Inject constructor(
     private val advertiserManager : AdvertiserManager,
     private val bleGattServer: BleGattServer
 ) : BleAdvertisingRepository {
+    override var savedMode: Int
+        get() = prefs.advertisingMode
+        set(value) { prefs.advertisingMode = value }
+
+    override var savedTxPower: Int
+        get() = prefs.txPower
+        set(value) { prefs.txPower = value}
+
+    override var savedConnectable: Boolean
+        get() = prefs.connectable
+        set(value) { prefs.connectable = value}
+
     override val advertisingState: StateFlow<BleAdvertisingState>
         get() = advertiserManager.advertisingState
 

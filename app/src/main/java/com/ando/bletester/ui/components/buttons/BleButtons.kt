@@ -13,7 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BottomButton(text : String,modifier : Modifier, onClick : () -> Unit) {
+fun BottomButton(
+    text : String,
+    modifier : Modifier,
+    onClick : () -> Unit
+) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),

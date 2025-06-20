@@ -8,12 +8,9 @@ import androidx.navigation.NavController
 
 @Composable
 fun LegacyAdvertiserScreen(
-    navController: NavController,
-    modifier: Modifier = Modifier
+    navController: NavController
 ){
-
     Column(modifier = Modifier.fillMaxSize()) {
-        BtDeviceName()
-        LegacyAdvertiserControl()
+        LegacyAdvertiserSettingScreen(navController)
     }
 }

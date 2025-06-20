@@ -13,7 +13,9 @@ class App : Application() {
     }
     override fun onCreate() {
         super.onCreate()
-        prefs.init(this)
+        prefs = Prefs().apply {
+            init(applicationContext)
+        }
         Log.i(TAG, "BleApp Start!")
     }
 }

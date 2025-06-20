@@ -36,14 +36,9 @@ import com.ando.bletester.bluetooth.ble.advertiser.legacy.Advertiser
 
 
 @Composable
-fun LegacyAdvertiserControl() {
+fun LegacyAdvertiserControlScreen() {
     val vm: AdvertisingViewModel = hiltViewModel()
     var isAdvertising by remember { mutableStateOf(false) }
-
-    var mode by remember { mutableStateOf(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY) }
-    var txPower by remember { mutableStateOf(AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM) }
-    var connectable by remember { mutableStateOf(false) }
-
 
     var includeName by remember { mutableStateOf(true) }
     var includeTxPower by remember { mutableStateOf(false) }
@@ -89,35 +84,6 @@ fun LegacyAdvertiserControl() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // === Settings Section ===
-            Text("Advertising Data", style = MaterialTheme.typography.titleMedium)
-
-            SettingDropdown("Advertise Mode", mode, listOf(
-                AdvertiseSettings.ADVERTISE_MODE_LOW_POWER to "Low Power",
-                AdvertiseSettings.ADVERTISE_MODE_BALANCED to "Balanced",
-                AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY to "Low Latency"
-            )) { mode = it }
-
-            SettingDropdown("Tx Power", txPower, listOf(
-                AdvertiseSettings.ADVERTISE_TX_POWER_ULTRA_LOW to "Ultra Low",
-                AdvertiseSettings.ADVERTISE_TX_POWER_LOW to "Low",
-                AdvertiseSettings.ADVERTISE_TX_POWER_MEDIUM to "Medium",
-                AdvertiseSettings.ADVERTISE_TX_POWER_HIGH to "High"
-            )) { txPower = it }
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Connectable")
-                Spacer(modifier = Modifier.width(8.dp))
-                Switch(checked = connectable, onCheckedChange = { connectable = it })
-            }
-
-            Button(onClick = {
-                vm.configureLegacyAdvertisingSetting(mode, txPower, connectable)
-            }) {
-                Text("Save")
-            }
-
-            Divider()
 
             // === Data Section ===
             Text("Advertising Data", style = MaterialTheme.typography.titleMedium)

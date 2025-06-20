@@ -5,6 +5,8 @@ object NavRoutes {
     const val SCANNER = "scanner"
     const val SCANNED = "scanned"
     const val ADVERTISER = "advertiser"
+    const val LEGACY_SETTING = "legacy_setting"
+    const val LEGACY_CONTROL = "legacy_control"
 }
 
 object NavArgs{

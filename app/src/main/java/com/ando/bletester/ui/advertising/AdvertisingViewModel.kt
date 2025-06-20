@@ -3,11 +3,14 @@ package com.ando.bletester.ui.advertising
 import android.bluetooth.le.AdvertiseSettings
 import androidx.lifecycle.ViewModel
 import com.ando.bletester.App
+import com.ando.bletester.App.Companion.prefs
+import com.ando.bletester.bluetooth.ble.advertiser.BleAdvertisingState
 import com.ando.bletester.data.repository.advertising.BleAdvertisingRepository
 import com.ando.bletester.data.repository.scan.BleScannerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import java.util.UUID
 import javax.inject.Inject
 
@@ -20,6 +23,17 @@ class AdvertisingViewModel @Inject constructor(
     }
 
     private val scope = CoroutineScope(Dispatchers.IO)
+
+    var savedMode: Int
+        get() = advertisingRepo.savedMode
+        set(value) {advertisingRepo.savedMode = value}
+    var savedTxPower: Int
+        get() = advertisingRepo.savedTxPower
+        set(value) {advertisingRepo.savedTxPower = value}
+
+    var savedConnectable: Boolean
+        get() = advertisingRepo.savedConnectable
+        set(value) {advertisingRepo.savedConnectable = value}
 
     fun setBtDeviceName(s : String){
         advertisingRepo.setBtDeviceName(s)
@@ -43,6 +57,10 @@ class AdvertisingViewModel @Inject constructor(
         connectable: Boolean = false,
 
     ){
+        advertisingRepo.savedMode = mode
+        advertisingRepo.savedTxPower = txPower
+        advertisingRepo.savedConnectable = connectable
+
         advertisingRepo.configureLegacyAdvertisingSetting(
             mode,txPower,connectable
         )

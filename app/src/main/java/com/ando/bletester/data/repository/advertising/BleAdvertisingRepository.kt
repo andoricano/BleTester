@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.UUID
 
 interface BleAdvertisingRepository {
+    var savedMode : Int
+    var savedTxPower : Int
+    var savedConnectable : Boolean
     val advertisingState : StateFlow<BleAdvertisingState>
     fun setAdvertisingParam(legacyMode: Boolean, connectable: Boolean, interval: Int, txPowerLevel: Int)
     fun setAdvertiseData(includeDeviceName: Boolean, serviceUuid: UUID?, manufacturerId: Int?, manufacturerData: ByteArray?)

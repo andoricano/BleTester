@@ -20,7 +20,7 @@ import com.ando.bletester.bluetooth.ble.advertiser.legacy.Advertiser
 import com.ando.bletester.ui.scanner.ScannerViewModel
 
 @Composable
-fun BtDeviceName() {
+fun BtDeviceName(modifier : Modifier) {
     val vm: AdvertisingViewModel = hiltViewModel()
 
     var btName by remember { mutableStateOf("") }
@@ -28,10 +28,14 @@ fun BtDeviceName() {
 
     Column(
         modifier = Modifier
-            .padding(16.dp),
+            .padding(16.dp)
+            .then(modifier),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text(text = "Bluetooth Device Name", style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = "Bluetooth Device Name",
+            style = MaterialTheme.typography.titleMedium
+        )
 
         TextField(
             value = btName,
@@ -52,7 +56,7 @@ fun BtDeviceName() {
         }
 
         savedName.let {
-            Text(text = "Bluetooth Name: $it", style = MaterialTheme.typography.bodyMedium)
+            Text(text = "Current Bluetooth Name: $it", style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

@@ -126,14 +126,14 @@ fun MainMenu(
 //        Button(onClick = { /* TODO: 액션 2 */ }) {
 //            Text("Extended Advertising")
 //        }
-        ColorButton(
-            containerColor = MainBtnColor,
-            text = "Scan"
-        ) {
-            vm.safeNavigate {
-                navController.navigate(NavRoutes.SCANNER)
-            }
-        }
+//        ColorButton(
+//            containerColor = MainBtnColor,
+//            text = "Scan"
+//        ) {
+//            vm.safeNavigate {
+//                navController.navigate(NavRoutes.SCANNER)
+//            }
+//        }
 
         ColorButton(
             containerColor = EndColor,
