@@ -24,6 +24,22 @@ class BleAdvertisingRepositoryImpl@Inject constructor(
         get() = prefs.connectable
         set(value) { prefs.connectable = value}
 
+    override var savedIncludedName: Boolean
+        get() = prefs.includedName
+        set(value) { prefs.includedName = value}
+
+    override var savedIncludedTxPower: Boolean
+        get() = prefs.includedTxPower
+        set(value) { prefs.includedTxPower = value}
+
+    override var savedIncludedManufacturerId: Int
+        get() = prefs.includedManufacturerId
+        set(value) { prefs.includedManufacturerId = value}
+
+    override var savedIncludedManufacturerData: String
+        get() = prefs.includedManufacturerData
+        set(value) { prefs.includedManufacturerData = value }
+
     override val advertisingState: StateFlow<BleAdvertisingState>
         get() = advertiserManager.advertisingState
 

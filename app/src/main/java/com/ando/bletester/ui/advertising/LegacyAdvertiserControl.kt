@@ -1,182 +1,95 @@
 package com.ando.bletester.ui.advertising
 
-import android.bluetooth.le.AdvertiseSettings
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ando.bletester.bluetooth.ble.advertiser.legacy.Advertiser
-
+import com.ando.bletester.ui.components.boxes.SectionLabelRow
+import com.ando.bletester.ui.components.buttons.TextSwitchButton
 
 @Composable
-fun LegacyAdvertiserControlScreen() {
+fun LegacyAdvertiserControl(
+    modifier : Modifier = Modifier
+){
     val vm: AdvertisingViewModel = hiltViewModel()
-    var isAdvertising by remember { mutableStateOf(false) }
+    var includeName by rememberSaveable { mutableStateOf(vm.includedName) }
+    var includeTxPower by rememberSaveable { mutableStateOf(vm.includedTxPower) }
+    var manufacturerIdText by remember { mutableIntStateOf(vm.includedManufacturerId) }
+    var manufacturerDataText by remember { mutableStateOf(vm.includedManufacturerData) }
 
-    var includeName by remember { mutableStateOf(true) }
-    var includeTxPower by remember { mutableStateOf(false) }
-    var manufacturerIdText by remember { mutableStateOf("") }
-    var manufacturerDataText by remember { mutableStateOf("") }
-    val scrollState = rememberScrollState()
+    Column(
+        modifier = modifier
+    ) {
 
-    Scaffold(
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(
-                    onClick = {
-                        vm.startAdvertising()
-                        isAdvertising = true
-                    },
-                    enabled = !isAdvertising
-                ) {
-                    Text("Advertising")
-                }
+        Text("Advertising Data", style = MaterialTheme.typography.titleMedium)
+        SectionLabelRow(
+            "include advertising",
+            Modifier.height(IntrinsicSize.Min)
+                .fillMaxWidth()
+        ){
+            TextSwitchButton("Name", includeName){checked ->
+                includeName = checked
+            }
+            Spacer(modifier = Modifier.width(8.dp))
 
-                Button(
-                    onClick = {
-                        vm.stopAdvertising()
-                        isAdvertising = false
-                    },
-                    enabled = isAdvertising
-                ) {
-                    Text("Stop")
-                }
+            TextSwitchButton("Tx Power", includeTxPower){checked ->
+                includeTxPower = checked
             }
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
 
-            // === Data Section ===
-            Text("Advertising Data", style = MaterialTheme.typography.titleMedium)
+        OutlinedTextField(
+            value = manufacturerIdText.toString(),
+            onValueChange = { manufacturerIdText = it.toIntOrNull()?:0 },
+            label = { Text("Manufacturer ID (hex)") },
+            singleLine = true
+        )
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Include Name")
-                Spacer(modifier = Modifier.width(8.dp))
-                Switch(checked = includeName, onCheckedChange = { includeName = it })
-            }
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Include Tx Power")
-                Spacer(modifier = Modifier.width(8.dp))
-                Switch(checked = includeTxPower, onCheckedChange = { includeTxPower = it })
-            }
-
-            OutlinedTextField(
-                value = manufacturerIdText,
-                onValueChange = { manufacturerIdText = it },
-                label = { Text("Manufacturer ID (hex)") },
-                singleLine = true
-            )
-
-            OutlinedTextField(
-                value = manufacturerDataText,
-                onValueChange = { manufacturerDataText = it },
-                label = { Text("Manufacturer Data (hex)") },
-                singleLine = true
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(scrollState),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                //TODO(save string)
-            }
-
-            Button(onClick = {
-                val id = manufacturerIdText.toIntOrNull(10)
-                    ?: manufacturerIdText.removePrefix("0x").toIntOrNull(16)
-                val data = manufacturerDataText.hexToByteArrayOrNull()
-
-                vm.configureLegacyAdvertisingData(
-                    includeName = includeName,
-                    includeTxPower = includeTxPower,
-                    manufacturerId = id,
-                    manufacturerData = data
-                )
-            }) {
-                Text("Save")
-            }
-        }
+        OutlinedTextField(
+            value = manufacturerDataText,
+            onValueChange = { manufacturerDataText = it },
+            label = { Text("Manufacturer Data (hex)") },
+            singleLine = true
+        )
     }
-}
-
-@Composable
-fun <T> SettingDropdown(
-    label: String,
-    selected: T,
-    options: List<Pair<T, String>>,
-    onSelect: (T) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Column {
-        Text(label)
-        Box {
-            OutlinedButton(onClick = { expanded = true }) {
-                Text(options.find { it.first == selected }?.second ?: "")
-            }
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                options.forEach { (value, label) ->
-                    DropdownMenuItem(
-                        text = { Text(label) },
-                        onClick = {
-                            onSelect(value)
-                            expanded = false
-                        }
-                    )
-                }
-            }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ){
+        Button(onClick = {
+            vm.configureLegacyAdvertisingData(
+                includedName = includeName,
+                includedTxPower = includeTxPower,
+                manufacturerId = manufacturerIdText,
+                manufacturerData = manufacturerDataText
+            )
+        }) {
+            Text("Save")
         }
-    }
-}
 
-fun String.hexToByteArrayOrNull(): ByteArray? {
-    return try {
-        chunked(2).map { it.toInt(16).toByte() }.toByteArray()
-    } catch (e: Exception) {
-        null
+        Button(onClick = {
+            vm.clearConfigData()
+        }) {
+            Text("Reset")
+        }
+
     }
 }

@@ -13,12 +13,17 @@ class Prefs {
     }
     private var prefs : SharedPreferences? = null
 
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////BluetoothSetting///////////////////////////////
     var includedCheckBtDeviceName : String
         get() = getPrefString("includedCheckBtDeviceName")
         set(value) {
             setPrefString("includedCheckBtDeviceName",value)
         }
-
+    /////////////////////////////BluetoothSetting///////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////AdvertisingSetting/////////////////////////////
     var advertisingMode : Int
         get() = getPrefInt("advertisingMode",0)
         set(value) {
@@ -31,12 +36,42 @@ class Prefs {
             setPrefInt("advertising_txPower",value)
         }
 
+
     var connectable : Boolean
-        get() = getPrefInt("advertising_connectable",0) == 1
+        get() = getPrefInt("advertising_connectable",1) == 1
         set(value) {
             setPrefInt("advertising_connectable",if(value) 1 else 0)
         }
+    /////////////////////////////AdvertisingSetting/////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////AdvertisingData////////////////////////////////
+    var includedName : Boolean
+        get() = getPrefInt("advertising_includedName",0) == 1
+        set(value) {
+            setPrefInt("advertising_includedName",if(value) 1 else 0)
+        }
+
+    var includedTxPower : Boolean
+        get() = getPrefInt("advertising_includedTxPower",0) == 1
+        set(value) {
+            setPrefInt("advertising_includedTxPower",if(value) 1 else 0)
+        }
+
+    var includedManufacturerId : Int
+        get() = getPrefInt("includedManufacturerId",0)
+        set(value) {
+            setPrefInt("includedManufacturerId",value)
+        }
+
+    var includedManufacturerData : String
+        get() = getPrefString("advertisingManufacturerData")
+        set(value) {
+            setPrefString("advertisingManufacturerData",value)
+        }
+    /////////////////////////////AdvertisingData////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
     fun init(context: Context) {
         prefs = context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)

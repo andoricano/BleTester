@@ -9,6 +9,12 @@ interface BleAdvertisingRepository {
     var savedMode : Int
     var savedTxPower : Int
     var savedConnectable : Boolean
+
+    var savedIncludedName : Boolean
+    var savedIncludedTxPower : Boolean
+    var savedIncludedManufacturerId : Int
+    var savedIncludedManufacturerData : String
+
     val advertisingState : StateFlow<BleAdvertisingState>
     fun setAdvertisingParam(legacyMode: Boolean, connectable: Boolean, interval: Int, txPowerLevel: Int)
     fun setAdvertiseData(includeDeviceName: Boolean, serviceUuid: UUID?, manufacturerId: Int?, manufacturerData: ByteArray?)

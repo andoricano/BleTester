@@ -1,6 +1,7 @@
 package com.ando.bletester.ui.advertising
 
 import android.bluetooth.le.AdvertiseSettings
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.ando.bletester.App
 import com.ando.bletester.App.Companion.prefs
@@ -24,16 +25,26 @@ class AdvertisingViewModel @Inject constructor(
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    var savedMode: Int
+    val savedMode: Int
         get() = advertisingRepo.savedMode
-        set(value) {advertisingRepo.savedMode = value}
-    var savedTxPower: Int
-        get() = advertisingRepo.savedTxPower
-        set(value) {advertisingRepo.savedTxPower = value}
 
-    var savedConnectable: Boolean
+    val savedTxPower: Int
+        get() = advertisingRepo.savedTxPower
+
+    val savedConnectable: Boolean
         get() = advertisingRepo.savedConnectable
-        set(value) {advertisingRepo.savedConnectable = value}
+
+    val includedName : Boolean
+        get() = advertisingRepo.savedIncludedName
+
+    val includedTxPower : Boolean
+        get() = advertisingRepo.savedIncludedTxPower
+
+    val includedManufacturerId : Int
+        get() = advertisingRepo.savedIncludedManufacturerId
+
+    val includedManufacturerData : String
+        get() = advertisingRepo.savedIncludedManufacturerData
 
     fun setBtDeviceName(s : String){
         advertisingRepo.setBtDeviceName(s)
@@ -67,20 +78,51 @@ class AdvertisingViewModel @Inject constructor(
     }
 
     fun configureLegacyAdvertisingData(
-        includeName: Boolean = true,
-        includeTxPower: Boolean = false,
-        manufacturerId: Int? = null,
-        manufacturerData: ByteArray? = null,
+        includedName: Boolean = true,
+        includedTxPower: Boolean = false,
+        manufacturerId: Int = 0,
+        manufacturerData: String = "",
         addServiceUuid : UUID? = null,
         addServiceData : ByteArray? = null){
+
+        advertisingRepo.savedIncludedName = includedName
+        advertisingRepo.savedIncludedTxPower = includedTxPower
+        advertisingRepo.savedIncludedManufacturerId = manufacturerId
+        advertisingRepo.savedIncludedManufacturerData = manufacturerData
+
         advertisingRepo.configureLegacyAdvertisingData(
-            includeName,
-            includeTxPower,
+            includedName,
+            includedTxPower,
             manufacturerId,
-            manufacturerData,
+            manufacturerData.hexStringToByteArray(),
             addServiceUuid,
             addServiceData)
     }
 
+    fun clearConfigData(){
+        advertisingRepo.savedIncludedName = false
+        advertisingRepo.savedIncludedTxPower = false
+        advertisingRepo.savedIncludedManufacturerId = 0
+        advertisingRepo.savedIncludedManufacturerData = ""
 
+        advertisingRepo.configureLegacyAdvertisingData(
+            includedName,
+            includedTxPower,
+            0,
+            "".hexStringToByteArray(),
+            null,
+            null)
+    }
+
+    fun String.hexStringToByteArray(): ByteArray {
+        val cleaned = this.uppercase().filter { it in '0'..'9' || it in 'A'..'F' }
+
+        if (cleaned.length < 2) return byteArrayOf()
+
+        val evenLengthStr = if (cleaned.length % 2 == 0) cleaned else cleaned.dropLast(1)
+
+        return evenLengthStr.chunked(2)
+            .map { it.toInt(16).toByte() }
+            .toByteArray()
+    }
 }
