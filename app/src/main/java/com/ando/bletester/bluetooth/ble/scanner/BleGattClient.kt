@@ -59,7 +59,10 @@ class BleGattClient @Inject constructor(
         device.connectGatt(context, false, gattCallback)
     }
 
-    fun getScanResults(): List<ScanResult> = scanResults.toList()
+    fun getScanResults(): List<ScanResult> {
+        Log.i(TAG, "client : ${scanResults.toList()}")
+        return scanResults.toList()
+    }
 
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(gatt: BluetoothGatt?, status: Int, newState: Int) {

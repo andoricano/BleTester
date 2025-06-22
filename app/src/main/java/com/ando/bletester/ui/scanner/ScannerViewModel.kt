@@ -32,7 +32,7 @@ class ScannerViewModel @Inject constructor(
         Log.i(TAG,"$TAG Start!")
         scope.launch {
             scanState.collect{
-                if(it == BleScanState.Scanned) _scanResults.value = scanRepo.testGetList()
+                if(it == BleScanState.Scanned) _scanResults.value = getScanResult()
             }
         }
     }

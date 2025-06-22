@@ -34,7 +34,18 @@ class ScannerManager(private val bleScanner: BluetoothLeScanner) {
 
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
-            val indexQuery = scanResults.indexOfFirst { it.device.address == result.device.address }
+            if(result.device.name == "chois") {
+                Log.i(TAG,"====================================")
+                Log.i(TAG,"============onScanResult============")
+                val bytes = result.scanRecord?.bytes
+                val hexString = bytes?.joinToString(" ") { String.format("%02X", it) }
+                Log.i(TAG, "ScanRecord bytes (hex): $hexString")
+                Log.i(TAG,"============onScanResult============")
+                Log.i(TAG,"====================================")
+
+            }
+            val indexQuery =
+                scanResults.indexOfFirst { it.device.address == result.device.address }
             if (indexQuery != -1) {
                 scanResults[indexQuery] = result
             } else {
@@ -82,6 +93,8 @@ class ScannerManager(private val bleScanner: BluetoothLeScanner) {
     fun getScannedDeviceInfo(scannerItem: ScannerItem): BluetoothDevice? {
         return scanResults.firstOrNull { it.device.address == scannerItem.address }?.device
     }
+
+    fun getScanList() :  MutableList<ScanResult> = scanResults
 
     fun testGetList() : List<ScannerItem> = getFake()
 

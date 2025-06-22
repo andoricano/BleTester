@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.ando.bletester.data.repository.advertising.BleAdvertisingRepository
 import com.ando.bletester.data.repository.scan.BleScannerRepository
 import com.ando.bletester.ui.scanner.data.ScannerItem
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,11 +16,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val scanRepo: BleScannerRepository
+    private val scanRepo: BleScannerRepository,
+    private val advertisingRepo : BleAdvertisingRepository
 ) : ViewModel(){
     private var navigationJob: Job? = null
     var selectedDevice : BluetoothDevice? = null
 
+    init{
+        advertisingRepo.initLegacyAdvertiser()
+    }
     fun updateSelectedDevice(scannerItem: ScannerItem){
         selectedDevice = scanRepo.getFindScannedDeviceInfo(scannerItem)
     }

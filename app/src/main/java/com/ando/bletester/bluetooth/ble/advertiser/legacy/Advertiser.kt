@@ -7,6 +7,8 @@ import android.bluetooth.le.AdvertiseData
 import android.bluetooth.le.AdvertiseSettings
 import android.os.ParcelUuid
 import android.util.Log
+import com.ando.bletester.App.Companion.prefs
+import com.ando.bletester.util.hexStringToByteArray
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.UUID
@@ -41,6 +43,29 @@ class Advertiser(private val bluetoothAdapter : BluetoothAdapter) {
             byteArrayOf(0x02, 0x15, 0x00, 0x01, 0x02, 0x03)
         )
         .build()
+
+
+    fun initAdvertiser(){
+        Log.i(TAG,"prefsLog advertisingMode: ${prefs.advertisingMode}")
+        Log.i(TAG,"prefsLog txPower: ${prefs.txPower}")
+        Log.i(TAG,"prefsLog connectable: ${prefs.connectable}")
+        Log.i(TAG,"prefsLog includedName: ${prefs.includedName}")
+        Log.i(TAG,"prefsLog includedTxPower: ${prefs.includedTxPower}")
+        Log.i(TAG,"prefsLog includedManufacturerId: ${prefs.includedManufacturerId}")
+        Log.i(TAG,"prefsLog includedManufacturerData: ${prefs.includedManufacturerData}")
+
+        configureSettings(
+            prefs.advertisingMode,
+            prefs.txPower,
+            prefs.connectable
+        )
+        configureData(
+            prefs.includedName,
+            prefs.includedTxPower,
+            prefs.includedManufacturerId,
+            prefs.includedManufacturerData.hexStringToByteArray()
+        )
+    }
 
     fun getBtDeviceName() : String = bluetoothAdapter.name
 

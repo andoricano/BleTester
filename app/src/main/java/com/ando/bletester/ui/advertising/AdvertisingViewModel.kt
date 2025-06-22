@@ -8,6 +8,7 @@ import com.ando.bletester.App.Companion.prefs
 import com.ando.bletester.bluetooth.ble.advertiser.BleAdvertisingState
 import com.ando.bletester.data.repository.advertising.BleAdvertisingRepository
 import com.ando.bletester.data.repository.scan.BleScannerRepository
+import com.ando.bletester.util.hexStringToByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,11 +55,11 @@ class AdvertisingViewModel @Inject constructor(
         return advertisingRepo.getBtDeviceName()
     }
 
-    fun startAdvertising(){
+    fun startLegacyAdvertising(){
         advertisingRepo.startLegacyAdvertising()
     }
 
-    fun stopAdvertising(){
+    fun stopLegacyAdvertising(){
         advertisingRepo.stopLegacyAdvertising()
     }
 
@@ -112,17 +113,5 @@ class AdvertisingViewModel @Inject constructor(
             "".hexStringToByteArray(),
             null,
             null)
-    }
-
-    fun String.hexStringToByteArray(): ByteArray {
-        val cleaned = this.uppercase().filter { it in '0'..'9' || it in 'A'..'F' }
-
-        if (cleaned.length < 2) return byteArrayOf()
-
-        val evenLengthStr = if (cleaned.length % 2 == 0) cleaned else cleaned.dropLast(1)
-
-        return evenLengthStr.chunked(2)
-            .map { it.toInt(16).toByte() }
-            .toByteArray()
     }
 }

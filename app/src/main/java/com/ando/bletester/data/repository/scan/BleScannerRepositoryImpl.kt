@@ -30,14 +30,17 @@ class BleScannerRepositoryImpl @Inject constructor(
         get() = bleGattClient.gattState
 
     override fun startScan() {
-        scannerManager.startScan(5000L)
+        scannerManager.startScan(3000L)
     }
 
     override fun stopScan() {
         scannerManager.stopScan()
     }
 
-    override fun getScanResult(): List<ScanResult> = bleGattClient.getScanResults()
+    override fun getScanResult(): List<ScanResult> {
+        Log.i("BleScannerRepo", "repo getScanResult : ${bleGattClient.getScanResults()}")
+        return scannerManager.getScanList()
+    }
     override fun connectBleByIndex(scannerItem: ScannerItem) {
         bleGattClient.connectBleByIndex(scannerItem)
     }

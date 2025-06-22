@@ -85,6 +85,10 @@ class BleAdvertisingRepositoryImpl@Inject constructor(
         )
     }
 
+    override fun initLegacyAdvertiser() {
+        advertiserManager.initLegacyAdvertiser()
+    }
+
     override fun startAdvertising() {
         advertiserManager.startAdvertising()
     }

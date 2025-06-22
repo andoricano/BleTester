@@ -48,7 +48,7 @@ fun LegacyAdvertiserControlScreen() {
             ) {
                 Button(
                     onClick = {
-                        vm.startAdvertising()
+                        vm.startLegacyAdvertising()
                         isAdvertising = true
                     },
                     enabled = !isAdvertising
@@ -58,7 +58,7 @@ fun LegacyAdvertiserControlScreen() {
 
                 Button(
                     onClick = {
-                        vm.stopAdvertising()
+                        vm.stopLegacyAdvertising()
                         isAdvertising = false
                     },
                     enabled = isAdvertising

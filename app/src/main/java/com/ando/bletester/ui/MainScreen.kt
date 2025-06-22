@@ -128,7 +128,7 @@ fun MainMenu(
 //        }
 //        ColorButton(
 //            containerColor = MainBtnColor,
-//            text = "Scan"
+//            text = "Scanning"
 //        ) {
 //            vm.safeNavigate {
 //                navController.navigate(NavRoutes.SCANNER)

@@ -22,6 +22,7 @@ interface BleAdvertisingRepository {
     fun startAdvertising()
     fun stopAdvertising()
 
+    fun initLegacyAdvertiser()
     fun startLegacyAdvertising()
     fun stopLegacyAdvertising()
     fun setBtDeviceName(name : String)

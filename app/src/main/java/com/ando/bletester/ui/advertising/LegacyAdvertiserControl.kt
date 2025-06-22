@@ -70,26 +70,36 @@ fun LegacyAdvertiserControl(
             singleLine = true
         )
     }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ){
-        Button(onClick = {
-            vm.configureLegacyAdvertisingData(
-                includedName = includeName,
-                includedTxPower = includeTxPower,
-                manufacturerId = manufacturerIdText,
-                manufacturerData = manufacturerDataText
-            )
-        }) {
-            Text("Save")
-        }
-
-        Button(onClick = {
-            vm.clearConfigData()
-        }) {
-            Text("Reset")
-        }
-
+    Button(onClick = {
+        vm.configureLegacyAdvertisingData(
+            includedName = includeName,
+            includedTxPower = includeTxPower,
+            manufacturerId = manufacturerIdText,
+            manufacturerData = manufacturerDataText
+        )
+    }) {
+        Text("Save")
     }
+//    Row(
+//        modifier = Modifier.fillMaxWidth(),
+//        horizontalArrangement = Arrangement.SpaceEvenly
+//    ){
+//        Button(onClick = {
+//            vm.configureLegacyAdvertisingData(
+//                includedName = includeName,
+//                includedTxPower = includeTxPower,
+//                manufacturerId = manufacturerIdText,
+//                manufacturerData = manufacturerDataText
+//            )
+//        }) {
+//            Text("Save")
+//        }
+//
+//        Button(onClick = {
+//            vm.clearConfigData()
+//        }) {
+//            Text("Reset")
+//        }
+//
+//    }
 }
