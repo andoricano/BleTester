@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseData
 import android.bluetooth.le.AdvertiseSettings
+import android.bluetooth.le.BluetoothLeAdvertiser
 import android.os.ParcelUuid
 import android.util.Log
 import com.ando.bletester.App.Companion.prefs
@@ -21,7 +22,7 @@ class Advertiser(private val bluetoothAdapter : BluetoothAdapter) {
     }
     private var advertisingPacket = ""
 
-    private val bluetoothLeAdvertiser = bluetoothAdapter.bluetoothLeAdvertiser
+    private val bluetoothLeAdvertiser : BluetoothLeAdvertiser?= bluetoothAdapter.bluetoothLeAdvertiser
 
     private var advertiseSettings = AdvertiseSettings.Builder()
         .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
@@ -93,12 +94,12 @@ class Advertiser(private val bluetoothAdapter : BluetoothAdapter) {
             return
         }
 
-        bluetoothLeAdvertiser.startAdvertising(advertiseSettings, advertiseData, advertiseCallback)
+        bluetoothLeAdvertiser?.startAdvertising(advertiseSettings, advertiseData, advertiseCallback)
     }
 
     fun stopAdvertising() {
         advertiseCallback.let {
-            bluetoothLeAdvertiser.stopAdvertising(it)
+            bluetoothLeAdvertiser?.stopAdvertising(it)
             Log.d(TAG, "Advertising stopped")
         }
     }

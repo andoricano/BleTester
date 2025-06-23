@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @SuppressLint("MissingPermission")
-class ScannerManager(private val bleScanner: BluetoothLeScanner) {
+class ScannerManager(private val bleScanner: BluetoothLeScanner?) {
     companion object{
         private const val TAG = App.TAG+"ScannerManager"
     }
@@ -63,7 +63,7 @@ class ScannerManager(private val bleScanner: BluetoothLeScanner) {
         val settings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
             .build()
-        bleScanner.startScan(null, settings, scanCallback)
+        bleScanner?.startScan(null, settings, scanCallback)
     }
 
     fun startScan(scanDurationMs: Long = 5000L){
@@ -83,7 +83,7 @@ class ScannerManager(private val bleScanner: BluetoothLeScanner) {
         }
     }
     fun stopScan(){
-        bleScanner.stopScan(scanCallback)
+        bleScanner?.stopScan(scanCallback)
     }
 
     fun startTestScan(){
